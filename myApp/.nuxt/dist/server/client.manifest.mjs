@@ -1,0 +1,1 @@
+export { default } from "file:///C:/Users/Nattapon/Downloads/myappE5/myApp/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
