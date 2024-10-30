@@ -114,15 +114,43 @@
             </v-form>
           </v-col>
         </v-row>
+        <div class="text-center pa-4">
+    <!-- <v-btn @click="dialog = true">
+      Open Dialog
+    </v-btn> -->
+
+    <v-dialog
+      v-model="dialog"
+      width="auto"
+    >
+      <v-card
+        max-width="400"
+        prepend-icon="mdi-update"
+        text="Your application will relaunch automatically after the update is complete."
+        title="Update in progress"
+      >
+        <template v-slot:actions>
+          <v-btn
+            class="ms-auto"
+            text="Ok"
+            @click="dialog = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
+  </div>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'RegistrationForm',
   data: () => ({
+    dialog: false,
     valid: true,
     fullName: '',
     email: '',
@@ -145,9 +173,27 @@ export default {
     ],
   }),
   methods: {
-    signUp() {
+   async signUp() {
+    console.log('signUp')         
+    const student = {
+        fullname: this.fullName,
+        email: this.email,  // ใช้ email เป็น username
+        password: this.passwd,
+
+  }
       if (this.$refs.form.validate()) {
         console.log('Sign up successful')
+          try {
+          const response = await axios.post('http://localhost:7000/insertStudent',student)
+          const status = response.data.ok
+          if (status === 0) {
+            this.dialog = true  
+            console.log('error insert')
+          }
+           
+          } catch (e) {
+            console.log(e.message)
+          }
       } else {
         console.log('Please fill all required fields correctly')
       }

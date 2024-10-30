@@ -63,8 +63,8 @@
           <div class="text-center mb-4">
             <router-link to="/forgot_pass" class="forgot-password-link">Forgot Password?</router-link>
           </div>
-          <v-btn @click="login" color="#4c8479" rounded="pill" class="login-btn mb-4"  block size="x-large">
-            <span class="white--text" >Login</span>
+          <v-btn color="#4c8479" rounded="pill"  @click="doLogin1"  class="login-btn mb-4"  block size="x-large">
+            <span class="white--text">Login</span>
           </v-btn>
           <div class="text-center mb-4">or</div>
           <v-btn color="#bed2d0" rounded="pill" class="create-account-btn mb-4" block size="x-large">
@@ -84,35 +84,46 @@
   </v-app>
 </template>
 
-<script>
-//import { ref } from 'vue'
-import axios from "axios";
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
 
-export default {
-  data() {
-    return {
-      email:'',
-      password:''
-    }
-  },
+const email = ref('')
+const password = ref('')
+const loginWithFacebook = () => {
+  console.log('Logging in with Facebook')
+  // Add your Facebook login logic here
+}
 
-
-  methods: {
-    async login(){
-      console.log('email = ',this.email)
-      console.log('password = ',this.password)
-
-      let forms = {
-        email: this.email,
-        passwd: this.password
+const  doLogin = async () => {
+  console.log('email=', email.value)
+  console.log('password=', password.value)
+  console.log('doLogin')
+  const response = await fetch('http://localhost:7000/listStudent?username='+ email.value); // URL ของ API
+  // console.log('respore=', response)
+  const data = await response.json(); // แปลง response เป็น JSON
+  console.log('data=', data.datas)
+  this.items = data; // เก็บข้อมูลใน state
+}
+const  doLogin1 = async () => {
+  console.log('email=', email.value)
+  console.log('password=', password.value)
+  const student = {
+    email: email.value,
+    passwd: password.value
+  }
+  console.log('doLogin1')
+  const response = await axios.get('http://localhost:7000/listStudent',{
+      params: {
+        student
       }
-    const response = await axios.post("http://localhost:7000/login"+ this.forms);
-      
-    }
-  },
+    });
+  students = response.data.datas; // จัดเก็บข้อมูลใน ref
 
-
-
+}
+const loginWithGmail = () => {
+  console.log('Logging in with Gmail')
+  // Add your Gmail login logic here
 }
 </script>
 
