@@ -48,12 +48,12 @@
               </template>
   
               <v-list-item-title class="font-weight-medium">
-                {{ item.username }}
+                {{ item.fullName }}
               </v-list-item-title>
-              <v-list-item-subtitle class="text-grey-darken-1">
-                {{ item.student_id }}
-              </v-list-item-subtitle>
-  
+              <div class="text-grey-darken-1 text-caption mb-1">
+                  {{ item.student_id }}
+                  <span v-if="item.attendance !== undefined" class="ml-2">({{ item.attendance }})</span>
+              </div>
               <template v-slot:append>
                 <div class="d-flex flex-column align-end">                
                  <v-menu location="bottom end">
@@ -76,10 +76,6 @@
                     </v-list-item>
                   </v-list>
                 </v-menu>
-                <div class="text-grey-darken-1 text-caption mb-1">
-                  {{ item.password }}
-                  <span v-if="item.attendance !== undefined" class="ml-2">({{ item.attendance }})</span>
-                </div>
                 </div>
               </template>
             </v-list-item>

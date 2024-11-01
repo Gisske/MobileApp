@@ -31,6 +31,18 @@
             <v-form ref="form" v-model="valid">
               <!-- Form fields remain unchanged -->
               <v-text-field
+                v-model="studentID"
+                :rules="studentRules"
+                label="StudentID"
+                required
+                class="custom-textfield"
+              >
+                <template v-slot:prepend-inner>
+                  <v-icon color="#2b524a">mdi-account</v-icon>
+                </template>
+              </v-text-field>
+
+              <v-text-field
                 v-model="fullName"
                 :rules="nameRules"
                 label="Full Name"
@@ -109,7 +121,7 @@
 
               <div class="text-center mt-4">
                 Already have an account? 
-                <router-link to="/signin" class="font-weight-bold white--text">Sign In</router-link>
+                <router-link to="/login" class="font-weight-bold white--text">Sign In</router-link>
               </div>
             </v-form>
           </v-col>
@@ -152,6 +164,7 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
+    studentID:'',
     fullName: '',
     email: '',
     password: '',
@@ -159,6 +172,10 @@ export default {
     agreeTerms: false,
     showPassword: false,
     showRetypePassword: false,
+    studentRules: [
+      v => !!v || 'studentID is required',
+      v => v.length <= 50 || 'Name must be less than 50 characters',
+    ],
     nameRules: [
       v => !!v || 'Name is required',
       v => v.length <= 50 || 'Name must be less than 50 characters',
@@ -177,9 +194,9 @@ export default {
     console.log('signUp')         
     const student = {
         fullname: this.fullName,
+        studentID: this.studentID,
         email: this.email,  // ใช้ email เป็น username
-        password: this.passwd,
-
+        password: this.password,
   }
       if (this.$refs.form.validate()) {
         console.log('Sign up successful')
